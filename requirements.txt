@@ -1,0 +1,13 @@
+langgraph>=0.5.0,<0.6
+langgraph-checkpoint>=4.0.0,<5
+langchain>=0.3.9,<0.4
+langchain-openai>=0.2,<0.3
+langchain-anthropic>=0.3,<0.4
+google-api-python-client>=2.190.0
+langchain-auth>=0.2.0,<0.3
+langgraph-sdk>=0.3,<0.4
+langsmith>=0.7.6
+pytz
+pyyaml
+python-dateutil>=2.9.0.post0
+python-dotenv>=1.2.1
