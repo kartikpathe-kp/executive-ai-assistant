@@ -12,6 +12,9 @@ listing:
   run_type: event
   price_type: free
   manifest:
+    state:
+      memory: true
+      checkpoints: true
     description: |
       An email assistant for your Gmail. It reads new mail, decides what needs a reply, drafts it in your voice and
       checks your calendar for meeting times. It pauses and asks you before sending or booking anything.
