@@ -1,0 +1,3 @@
+name: executive-assistant
+runtime: python
+entry: eaia.main.graph:graph
