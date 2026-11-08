@@ -9,6 +9,7 @@ from langgraph.store.base import BaseStore
 from typing import TypedDict, Literal, Union, Optional
 from langgraph_sdk import get_client
 from eaia.main.config import get_config
+from eaia.main.reply import answer
 
 LGC = get_client()
 
@@ -86,7 +87,7 @@ async def send_message(state: State, config, store):
         },
         "description": _generate_email_markdown(state),
     }
-    response = interrupt([request])[0]
+    response = answer(interrupt([request]))
     _email_template = email_template.format(
         email_thread=state["email"]["page_content"],
         author=state["email"]["from_email"],
@@ -152,7 +153,7 @@ async def send_email_draft(state: State, config, store):
         },
         "description": _generate_email_markdown(state),
     }
-    response = interrupt([request])[0]
+    response = answer(interrupt([request]))
     _email_template = email_template.format(
         email_thread=state["email"]["page_content"],
         author=state["email"]["from_email"],
@@ -252,7 +253,7 @@ async def notify(state: State, config, store):
         },
         "description": _generate_email_markdown(state),
     }
-    response = interrupt([request])[0]
+    response = answer(interrupt([request]))
     _email_template = email_template.format(
         email_thread=state["email"]["page_content"],
         author=state["email"]["from_email"],
@@ -313,7 +314,7 @@ async def send_cal_invite(state: State, config, store):
         },
         "description": _generate_email_markdown(state),
     }
-    response = interrupt([request])[0]
+    response = answer(interrupt([request]))
     _email_template = email_template.format(
         email_thread=state["email"]["page_content"],
         author=state["email"]["from_email"],
