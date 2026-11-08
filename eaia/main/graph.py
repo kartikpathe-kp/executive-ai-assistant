@@ -187,4 +187,7 @@ graph_builder.add_edge("send_email_draft", "human_node")
 graph_builder.add_edge("mark_as_read_node", END)
 graph_builder.add_edge("notify", "human_node")
 graph_builder.add_conditional_edges("human_node", enter_after_human)
-graph = graph_builder.compile()
+# Standalone hosting (no LangGraph server): provide the memory store the nodes read few-shot examples from.
+from langgraph.store.memory import InMemoryStore
+
+graph = graph_builder.compile(store=InMemoryStore())
