@@ -13,7 +13,6 @@ import base64
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import email.utils
-from langchain_auth import Client
 
 from langchain_core.tools import tool
 from pydantic import BaseModel, Field
@@ -27,60 +26,19 @@ _SCOPES = [
 ]
 
 
-async def get_credentials(
-    user_email: str,
-    langsmith_api_key: str | None = None
-) -> Credentials:
-    """Get Google API credentials using langchain auth-client.
-    
-    Args:
-        user_email: User's Gmail email address (used as user_id for auth)
-        langsmith_api_key: LangSmith API key for auth client
-        
-    Returns:
-        Google OAuth2 credentials
+async def get_credentials(user_email: str = "", langsmith_api_key: str | None = None) -> Credentials:
+    """Google credentials for the person running this agent.
+
+    On Trublica the caller connects Google once under Connections; each run receives a short-lived access token.
     """
-    api_key = langsmith_api_key or os.getenv("LANGSMITH_API_KEY")
-    if not api_key:
-        raise ValueError("LANGSMITH_API_KEY environment variable must be set")
-    
-    client = Client(api_key=api_key)
-    
     try:
-        # Authenticate with Google using the user's email as user_id
-        auth_result = await client.authenticate(
-            provider="google",
-            scopes=_SCOPES,
-            user_id=user_email
-        )
-        
-        if auth_result.needs_auth:
-            print(f"Please visit: {auth_result.auth_url}")
-            print("Complete the OAuth flow and then retry.")
-            
-            # Wait for completion outside of LangGraph context
-            completed_result = await client.wait_for_completion(
-                auth_id=auth_result.auth_id,
-                timeout=300
-            )
-            token = completed_result.token
-        else:
-            token = auth_result.token
-        
-        if not token:
-            raise ValueError("Failed to obtain access token")
-        
-        # Create credentials object from the token
-        # langchain auth-client returns the access token as a string
-        creds = Credentials(
-            token=token,
-            scopes=_SCOPES
-        )
-        
-        return creds
-        
-    finally:
-        await client.close()
+        from trublica_shim import connection
+    except ImportError:
+        connection = lambda _p: None  # noqa: E731
+    token = connection("google") or os.getenv("GOOGLE_ACCESS_TOKEN")
+    if not token:
+        raise ValueError("Connect your Google account under Connections to use this agent")
+    return Credentials(token=token, scopes=_SCOPES)
 
 
 def extract_message_part(msg):

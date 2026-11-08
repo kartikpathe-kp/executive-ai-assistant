@@ -1,3 +1,35 @@
 name: executive-assistant
 runtime: python
 entry: eaia.main.graph:graph
+connections:
+  - provider: google
+    source: user
+    scopes: [gmail.modify, calendar]
+listing:
+  title: Executive AI Assistant
+  tagline: Triages your inbox, drafts replies and finds meeting times, asking you before it sends anything.
+  category: productivity
+  run_type: event
+  price_type: free
+  manifest:
+    description: |
+      An email assistant for your Gmail. It reads new mail, decides what needs a reply, drafts it in your voice and
+      checks your calendar for meeting times. It pauses and asks you before sending or booking anything.
+    event_template:
+      email:
+        id: "{{id}}"
+        thread_id: "{{thread_id}}"
+        subject: "{{subject}}"
+        from_email: "{{from}}"
+        page_content: "{{snippet}}"
+        send_time: ""
+        to_email: ""
+    sample:
+      email:
+        id: sample-1
+        thread_id: sample-1
+        subject: Lunch on Thursday?
+        from_email: friend@example.com
+        page_content: Are you free for lunch on Thursday?
+        send_time: "2026-01-05T10:00:00Z"
+        to_email: me@example.com

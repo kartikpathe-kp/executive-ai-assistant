@@ -24,7 +24,6 @@ jsonpatch==1.44
 jsonpointer==3.10
 langchain==1.4.9
 langchain-anthropic==1.7.10
-langchain-auth==0.3.0
 langchain-core==1.7.6
 langchain-openai==1.7.4
 langchain-protocol==0.0.21
