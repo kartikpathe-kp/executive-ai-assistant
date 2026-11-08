@@ -1,6 +1,6 @@
 """Agent responsible for rewriting the email in a better tone."""
 
-from langchain_openai import ChatOpenAI
+from eaia.llm import chat
 
 from eaia.schemas import State, ReWriteEmail
 
@@ -32,7 +32,7 @@ Subject: {subject}
 
 async def rewrite(state: State, config, store):
     model = config["configurable"].get("model", "gpt-4o")
-    llm = ChatOpenAI(model=model, temperature=0)
+    llm = chat(model=model, temperature=0)
     prev_message = state["messages"][-1]
     draft = prev_message.tool_calls[0]["args"]["content"]
     namespace = (config["configurable"].get("assistant_id", "default"),)

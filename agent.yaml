@@ -12,6 +12,7 @@ listing:
   run_type: event
   price_type: free
   manifest:
+    models: [openai/gpt-4o]
     state:
       memory: true
       checkpoints: true
